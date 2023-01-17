@@ -1,4 +1,5 @@
 from tech_news.database import search_news
+from datetime import datetime
 
 
 # Requisito 6
@@ -11,7 +12,11 @@ def search_by_title(title):
 
 # Requisito 7
 def search_by_date(date):
-    """Seu código deve vir aqui"""
+    date_format = datetime.fromisoformat(date).strftime("%d/%m/%Y")
+    tuple_news = []
+    for new in search_news({"timestamp": {"timestamp": {"$eq": date_format}}}):
+        tuple_news.append((new["title"], new["url"]))
+    return tuple_news
 
 
 # Requisito 8
