@@ -91,4 +91,3 @@ def get_tech_news(amount):
 
     create_news(news_info)
     return news_info
-
