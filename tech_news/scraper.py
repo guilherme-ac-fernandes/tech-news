@@ -3,6 +3,18 @@ from time import sleep
 from parsel import Selector
 
 
+# Remoção de tags HTML presentes na string sem a utilização da
+# biblioteca Beautiful Soup através de um função proveniente da
+# página Medium (autor: Jorge Galvis)
+# source: https://medium.com/@jorlugaqui/how-to-strip-html-tags
+# -from-a-string-in-python-7cb81a2bbf44
+def remove_html_tags(text):
+    """Remove html tags from a string"""
+    import re
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
+
 # Requisito 1
 def fetch(url):
     try:
@@ -35,7 +47,29 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
+    selector = Selector(html_content)
+    url = selector.css("link[rel='canonical']::attr(href)").get()
+    title = selector.css("h1.entry-title::text").get()
+    timestamp = selector.css(".meta-date::text").get()
+    writer = selector.css(".author a::text").get()
+    comments_count = len(selector.css("comment-list li").getall()) or 0
+    summary = remove_html_tags(selector.css(".entry-content p").get())
+    tags = selector.css(".post-tags li a::text").getall()
+    category = selector.css(".meta-category .label::text").get()
+
+    if not title or not summary:
+        return None
+
+    return {
+        "url": url,
+        "title": title.strip(),
+        "timestamp": timestamp,
+        "writer": writer,
+        "comments_count": comments_count,
+        "summary": summary.strip(),
+        "tags": tags,
+        "category": category,
+    }
 
 
 # Requisito 5
@@ -45,3 +79,4 @@ def get_tech_news(amount):
 
 # html_trybe = fetch('https://blog.betrybe.com/')
 # print(scrape_updates(html_trybe))
+print(scrape_news(fetch('https://blog.betrybe.com/tecnologia/arquivo-bin/')))
