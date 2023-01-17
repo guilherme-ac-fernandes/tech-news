@@ -15,7 +15,7 @@ def search_by_date(date):
     try:
         date_format = datetime.fromisoformat(date).strftime("%d/%m/%Y")
         tuple_news = []
-        query = {"timestamp": {"timestamp": {"$eq": date_format}}}
+        query = {"timestamp": {"$eq": date_format}}
         for new in search_news(query):
             tuple_news.append((new["title"], new["url"]))
         return tuple_news
