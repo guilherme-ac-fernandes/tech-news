@@ -92,7 +92,3 @@ def get_tech_news(amount):
     create_news(news_info)
     return news_info
 
-
-# print(scrape_updates(html_trybe))
-# print(scrape_next_page_link(fetch('https://blog.betrybe.com/')))
-# print(get_tech_news(2))
