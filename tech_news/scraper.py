@@ -1,6 +1,7 @@
 import requests
 from time import sleep
 from parsel import Selector
+from tech_news.database import create_news
 
 
 # Remoção de tags HTML presentes na string sem a utilização da
@@ -74,9 +75,25 @@ def scrape_news(html_content):
 
 # Requisito 5
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    URL = 'https://blog.betrybe.com/'
+
+    links = []
+    next_link = scrape_next_page_link(fetch(URL))
+
+    while next_link and len(links) <= amount:
+        html_content = fetch(URL)
+        links.extend(scrape_updates(html_content))
+        URL = scrape_next_page_link(html_content)
+
+    news_info = []
+    for link in links[:amount]:
+        page_content = fetch(link)
+        news_info.append(scrape_news(page_content))
+
+    create_news(news_info)
+    return news_info
 
 
-# html_trybe = fetch('https://blog.betrybe.com/')
 # print(scrape_updates(html_trybe))
-print(scrape_news(fetch('https://blog.betrybe.com/tecnologia/arquivo-bin/')))
+# print(scrape_next_page_link(fetch('https://blog.betrybe.com/')))
+# print(get_tech_news(2))
