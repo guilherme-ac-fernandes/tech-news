@@ -80,12 +80,17 @@ def get_tech_news(amount):
     links = []
     news_info = []
 
-    while len(links) <= amount:
+    if not amount.isdigit():
+        raise ValueError()
+
+    amount_int = int(amount)
+
+    while len(links) <= amount_int:
         html_content = fetch(URL)
         links.extend(scrape_updates(html_content))
         URL = scrape_next_page_link(html_content)
 
-    for link in links[:amount]:
+    for link in links[:amount_int]:
         page_content = fetch(link)
         news_info.append(scrape_news(page_content))
 
