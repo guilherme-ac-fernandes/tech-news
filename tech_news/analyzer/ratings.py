@@ -5,16 +5,18 @@ from operator import itemgetter
 
 # Requisito 10
 def top_5_news():
-    """Seu código deve vir aqui"""
     news = find_news()
     alphabetic_news = sorted(news, key=itemgetter('title'))
-    popular_news = sorted(alphabetic_news, key=itemgetter('comments_count'))
+    popular_news = sorted(
+        alphabetic_news,
+        key=itemgetter('comments_count'),
+        reverse=True,
+    )
     return popular_news[:5]
 
 
 # Requisito 11
 def top_5_categories():
-    """Seu código deve vir aqui"""
     news = find_news()
     categories = [new["category"] for new in news]
     categories_count = Counter(sorted(categories)).most_common()
@@ -22,4 +24,4 @@ def top_5_categories():
     return categories_top_five[:5]
 
 
-# print(top_5_news())
+print(top_5_news())
