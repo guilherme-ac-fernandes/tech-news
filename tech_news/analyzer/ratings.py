@@ -16,8 +16,7 @@ def top_5_news():
         key=itemgetter('comments_count'),
         reverse=True,
     )
-    # return [(i['title'], i['comments_count']) for i in popular_news][:5]
-    return [new['title'] for new in popular_news][:5]
+    return [(new["title"], new["url"]) for new in popular_news][:5]
 
 
 # Requisito 11
@@ -27,6 +26,3 @@ def top_5_categories():
     categories_count = Counter(sorted(categories)).most_common()
     categories_top_five = [category[0] for category in categories_count]
     return categories_top_five[:5]
-
-
-# print(top_5_news())
