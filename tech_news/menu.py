@@ -8,35 +8,7 @@ from tech_news.analyzer.ratings import top_5_news
 import sys
 
 
-def find_get_tech_news(amount):
-    return get_tech_news(amount)
-
-
-def find_title(title):
-    return search_by_title(title)
-
-
-def find_date(title):
-    return search_by_date(title)
-
-
-def find_tag(title):
-    return search_by_tag(title)
-
-
-def find_category(title):
-    return search_by_category(title)
-
-
-def find_top_5_news():
-    return top_5_news()
-
-
-def find_top_5_categories():
-    return top_5_categories()
-
-
-array_options = [
+string_options = [
     'Selecione uma das opções a seguir:\n',
     ' 0 - Popular o banco com notícias;\n',
     ' 1 - Buscar notícias por título;\n',
@@ -48,98 +20,89 @@ array_options = [
     ' 7 - Sair.',
 ]
 
-callback_option = {
+
+def _get_tech_news(amount):
+    if not amount.isdigit():
+        raise ValueError()
+    return get_tech_news(amount)
+
+
+def _search_by_title(title):
+    return search_by_title(title)
+
+
+def _search_by_date(title):
+    return search_by_date(title)
+
+
+def _search_by_tag(title):
+    return search_by_tag(title)
+
+
+def _search_by_category(title):
+    return search_by_category(title)
+
+
+def _top_5_news():
+    return top_5_news()
+
+
+def _top_5_categories():
+    return top_5_categories()
+
+
+functions_options = {
     "0": {
-        "def": find_get_tech_news,
-        "inputString": "Digite quantas notícias serão buscadas:"
+        "callback": _get_tech_news,
+        "question": "Digite quantas notícias serão buscadas:"
     },
     "1": {
-        "def": find_title,
-        "inputString": "Digite o título:"
+        "callback": _search_by_title,
+        "question": "Digite o título:"
     },
     "2": {
-        "def": find_date,
-        "inputString": "Digite a data no formato aaaa-mm-dd:"
+        "callback": _search_by_date,
+        "question": "Digite a data no formato aaaa-mm-dd:"
     },
     "3": {
-        "def": find_tag,
-        "inputString": "Digite a tag:"
+        "callback": _search_by_tag,
+        "question": "Digite a tag:"
     },
     "4": {
-        "def": find_category,
-        "inputString": "Digite a categoria:"
+        "callback": _search_by_category,
+        "question": "Digite a categoria:"
     },
     "5": {
-        "def": find_top_5_news,
+        "callback": _top_5_news,
     },
     "6": {
-        "def": find_top_5_categories,
+        "callback": _top_5_categories,
     },
 }
 
 
 # Requisito 12
 def analyzer_menu():
-    menu_options = "".join(array_options)
-    choose_option = input(menu_options)
+    menu_options = "".join(string_options)
+    option = input(menu_options)
 
-    if not choose_option.isdigit() or int(choose_option) not in range(8):
+    if not option.isdigit() or int(option) not in range(8):
         print(ValueError('Opção inválida'), file=sys.stderr)
         return
 
-    if int(choose_option) == 7:
+    if int(option) == 7:
         print("Encerrando script\n")
         return
 
-    # response = ''
-    callback = callback_option[choose_option]
+    function = functions_options[option]
+    response = ''
 
-    if "inputString" in callback:
-        response_input = input(callback["inputString"])
-        response = callback["def"](response_input)
-        print(response, end="")
-    else:
-        response = callback["def"]()
-        print(response, end="")
+    if "question" in function:
+        response_input = input(function["question"])
+        response = function["callback"](response_input)
 
-    # print(response, end="")
-    # return response
+    if "question" not in function:
+        response = function["callback"]()
 
-# def analyzer_menu():
-#     options = "".join(array_options)
-#     option = input(options)
-
-#     if option == '0':
-#         news_amount = input("Digite quantas notícias serão buscadas:")
-#         return get_tech_news(news_amount)
-
-#     elif option == '1':
-#         news_title = input("Digite o título:")
-#         return search_by_title(news_title)
-
-#     elif option == '2':
-#         news_date = input("Digite a data no formato aaaa-mm-dd:")
-#         return search_by_date(news_date)
-
-#     elif option == '3':
-#         news_tag = input("Digite a tag:")
-#         return search_by_tag(news_tag)
-
-#     elif option == '4':
-#         news_category = input("Digite a categoria:")
-#         return search_by_category(news_category)
-
-#     elif option == '5':
-#         return top_5_news(news_amount)
-
-#     elif option == '6':
-#         return top_5_categories(news_amount)
-
-#     elif option == '7':
-#         return
-#     else:
-#         print(ValueError('Opção inválida'), file=sys.stderr)
-
-#     # print(response, end="")
-
-# print(analyzer_menu())
+    print(response, end="")
+    return response
