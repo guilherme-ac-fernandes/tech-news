@@ -1,5 +1,9 @@
 from tech_news.database import find_news
 from collections import Counter
+# Utilização do modulo operator para ordenação de dicionários
+# proveniente do Stack OverFlow
+# source: https://stackoverflow.com/questions/72899/how-do-i-
+# sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
 from operator import itemgetter
 
 
@@ -12,7 +16,8 @@ def top_5_news():
         key=itemgetter('comments_count'),
         reverse=True,
     )
-    return popular_news[:5]
+    # return [(i['title'], i['comments_count']) for i in popular_news][:5]
+    return [new['title'] for new in popular_news][:5]
 
 
 # Requisito 11
@@ -24,4 +29,4 @@ def top_5_categories():
     return categories_top_five[:5]
 
 
-print(top_5_news())
+# print(top_5_news())
