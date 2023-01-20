@@ -1,10 +1,10 @@
-from tech_news.scraper import get_tech_news
 from tech_news.analyzer.search_engine import search_by_category
+from tech_news.analyzer.search_engine import search_by_title
 from tech_news.analyzer.search_engine import search_by_date
 from tech_news.analyzer.search_engine import search_by_tag
-from tech_news.analyzer.search_engine import search_by_title
 from tech_news.analyzer.ratings import top_5_categories
 from tech_news.analyzer.ratings import top_5_news
+from tech_news.scraper import get_tech_news
 import sys
 
 
@@ -23,7 +23,7 @@ string_options = [
 
 def _get_tech_news(amount):
     if not amount.isdigit():
-        raise ValueError()
+        raise ValueError('Erro: Quantidade não numérica!')
     return get_tech_news(amount)
 
 
@@ -53,24 +53,24 @@ def _top_5_categories():
 
 functions_options = {
     "0": {
+        "question": "Digite quantas notícias serão buscadas:",
         "callback": _get_tech_news,
-        "question": "Digite quantas notícias serão buscadas:"
     },
     "1": {
+        "question": "Digite o título:",
         "callback": _search_by_title,
-        "question": "Digite o título:"
     },
     "2": {
+        "question": "Digite a data no formato aaaa-mm-dd:",
         "callback": _search_by_date,
-        "question": "Digite a data no formato aaaa-mm-dd:"
     },
     "3": {
+        "question": "Digite a tag:",
         "callback": _search_by_tag,
-        "question": "Digite a tag:"
     },
     "4": {
+        "question": "Digite a categoria:",
         "callback": _search_by_category,
-        "question": "Digite a categoria:"
     },
     "5": {
         "callback": _top_5_news,

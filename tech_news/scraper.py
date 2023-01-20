@@ -1,7 +1,7 @@
-import requests
-from time import sleep
-from parsel import Selector
 from tech_news.database import create_news
+from parsel import Selector
+from time import sleep
+import requests
 
 
 # Remoção de tags HTML presentes na string sem a utilização da
@@ -26,7 +26,7 @@ def fetch(url):
             headers={"user-agent": "Fake user-agent"},
         )
         response.raise_for_status()
-    except (requests.HTTPError, requests.ReadTimeout):
+    except (requests.ReadTimeout, requests.HTTPError):
         return None
     else:
         return response.text
@@ -49,17 +49,19 @@ def scrape_next_page_link(html_content):
 # Requisito 4
 def scrape_news(html_content):
     selector = Selector(html_content)
-    url = selector.css("link[rel='canonical']::attr(href)").get()
+
     title = selector.css("h1.entry-title::text").get()
-    timestamp = selector.css(".meta-date::text").get()
-    writer = selector.css(".author a::text").get()
-    comments_count = len(selector.css("comment-list li").getall()) or 0
     summary = remove_html_tags(selector.css(".entry-content p").get())
-    tags = selector.css(".post-tags li a::text").getall()
-    category = selector.css(".meta-category .label::text").get()
 
     if not title or not summary:
         return None
+
+    url = selector.css("link[rel='canonical']::attr(href)").get()
+    timestamp = selector.css(".meta-date::text").get()
+    writer = selector.css(".author a::text").get()
+    comments_count = len(selector.css("comment-list li").getall()) or 0
+    tags = selector.css(".post-tags li a::text").getall()
+    category = selector.css(".meta-category .label::text").get()
 
     return {
         "url": url,
@@ -77,15 +79,15 @@ def scrape_news(html_content):
 def get_tech_news(amount):
     URL = 'https://blog.betrybe.com/'
 
-    links = []
+    news_links = []
     news_info = []
 
-    while len(links) <= amount:
+    while len(news_links) <= amount:
         html_content = fetch(URL)
-        links.extend(scrape_updates(html_content))
+        news_links.extend(scrape_updates(html_content))
         URL = scrape_next_page_link(html_content)
 
-    for link in links[:amount]:
+    for link in news_links[:amount]:
         page_content = fetch(link)
         news_info.append(scrape_news(page_content))
 
