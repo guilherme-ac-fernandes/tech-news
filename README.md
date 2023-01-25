@@ -1,6 +1,6 @@
 # Projeto Tech News 👨🏻‍💻🗞
 
-Consiste em uma aplicação para realização de consultas de notícias sobre tecnologia presentes no [blog da Trybe](https://blog.betrybe.com/), realizar a raspagem dos dados e armazenar em um banco de dados.
+Consiste em uma aplicação para realização de consultas de notícias sobre tecnologia presentes no [blog da Trybe](https://blog.betrybe.com/), para realização da raspagem dos dados e armazenar em um banco de dados.
 
 * Construído utilizando Python e MongoDB
 
