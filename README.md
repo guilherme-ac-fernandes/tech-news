@@ -50,7 +50,7 @@ Consiste em uma aplicação para realização de consultas de notícias sobre te
 
 Legenda:
 🔸 Arquivos desenvolvidos pela Trybe (não foram alterados).
-🔹 Arquivos a serem alterados para realizar os requisitos.
+🔹 Arquivos desenvolvidos por mim.
 
 ```
 
